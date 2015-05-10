@@ -45,7 +45,9 @@ bool SmartRandom::turn() {
     }
     tracking.record(location, result); 
     if (verbose)
-        std::cout << "Turn " << turns << ", bombing " << 
-            location << '\n' << ocean << std::endl;
+        std::cout << "\nTurn " << turns << ", bombing " << location 
+            << "\nTracking:\n" << tracking 
+            << '\n' << ocean 
+            << std::endl;
     return ocean.remaining();
 }

@@ -3,7 +3,16 @@
 
 #include "Ocean.h"
 #include <vector>
+#include <string>
 
-extern std::vector<Ocean (*)()> placer;
+class Placer {
+public:
+    Placer() = default;
+    virtual ~Placer() = default;
+    virtual Ocean operator()() = 0;
+    virtual const char *id() const = 0;
+private:
+};
+extern std::vector<Placer *> placers;
 
 #endif // PLACER_H

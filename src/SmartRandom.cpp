@@ -12,7 +12,7 @@ static std::uniform_int_distribution<> r{0, Ocean::dim*Ocean::dim-1};
  */
 bool SmartRandom::turn() {
     ++turns;
-    unsigned location;
+    unsigned location = r(rd);
     // try using our pre-stored guesses first
     if (!next.empty()) {
         for (location = next.back(); 

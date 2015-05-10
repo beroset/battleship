@@ -2,18 +2,28 @@
 #include <string>
 #include <random>
 #include "Ocean.h"
-#include "RandomBomber.h"
+#include "Bombers.h"
 #include "Placer.h"
 
 int main()
 {
-    static constexpr int trials{1000};
-    std::cout << "There are " << placer.size() << " placers, and " 
-        << 1 << " bombers\n";
-    for (auto &p : placer) {
-        Ocean o = p();
-        std::cout << o.status() << o << std::endl;
-        RandomBomber rb(o);
-        std::cout << rb.play() << std::endl;
+    static constexpr int trials{10};
+    std::cerr << "There are " << placers.size() << " placers, and " 
+        << bombers.size() << " bombers\nRunning " << trials 
+        << " iterations\n";
+    for (auto &p : placers) {
+        for (auto &b : bombers) {
+            std::cout << p->id() << "/" << b->id() << '\t';
+        }
+    }
+    std::cout << std::endl;
+    for (auto i=0; i < trials; ++i) {
+        for (auto &p : placers) {
+            Ocean o = (*p)();
+            for (auto &b : bombers) {
+                std::cout << b->play(o) << '\t';
+            }
+        }
+        std::cout << std::endl;
     }
 }

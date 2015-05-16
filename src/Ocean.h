@@ -18,6 +18,7 @@ class Ocean
 {
 public:
     Ocean() : squares(), ships() {}
+    void reset() { squares.fill(0); ships.fill(0); }
     /*
      * returns empty if empty,
      * hit if hit or the first letter of the ship if sunk
@@ -38,6 +39,7 @@ public:
      */
     void record(unsigned pos, unsigned shiptype);
     unsigned operator[](int p) const { return squares[p]; }
+    std::size_t size() const { return dim*dim; }
     friend std::ostream& operator<<(std::ostream& out, const Ocean &o) {
         auto i=o.dim;
         for (auto &sq : o.squares) {

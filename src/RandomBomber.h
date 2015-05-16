@@ -6,10 +6,14 @@
 class RandomBomber : public Bomber
 {
 public:
-    RandomBomber() : Bomber() {}
-    RandomBomber(Ocean &o) : Bomber(o) {}
-    bool turn();
     const char *id() const { return "RandomBomber"; }
+    std::ostream& printTo(std::ostream &out) { return out << "\nTracking:\n" << tracking << std::endl; }
+private:
+    unsigned guess();
+    void result(unsigned location, char bombresult);
+    void reset() { tracking.reset(); }
+protected:
+    Ocean tracking;
 };
 
 #endif // RANDOMBOMBER_H

@@ -1,6 +1,8 @@
 #ifndef BOMBER_H
 #define BOMBER_H
+#include <iostream>
 #include <random>
+#include <algorithm>
 #include "Ocean.h"
 
 /*
@@ -9,23 +11,37 @@
 class Bomber
 {
 public:
-    Bomber() : ocean(), tracking(), turns(), verbose(false) 
-    {}
-    Bomber(Ocean &o) : ocean(o), tracking(), turns(), verbose(false) 
-    {}
     virtual ~Bomber() = default;
-    virtual bool turn() = 0;
-    void reset(Ocean &o) { ocean=o; tracking=Ocean{}; turns=0; }
-    unsigned play() { while(turn()); return turns; }
-    unsigned play(Ocean &o) { reset(o); return play(); }
+    unsigned play(Ocean o) { 
+        reset();
+        unsigned osize = o.size();
+        unsigned turns;
+        for (turns = 0; o.remaining() && turns <= osize; ++turns)
+        {
+            unsigned location = guess();
+            result(location, o.bomb(location));
+            if (verbose)
+                std::cout << "\nTurn " << turns << ", " << id() 
+                    << " bombing " << location << '\n' 
+                    << o 
+                    << *this << std::endl;
+        }
+        return turns;
+    }
     virtual const char *id() const = 0;
+    friend std::ostream& operator<<(std::ostream &out, Bomber& b) {
+        return b.printTo(out);
+    }
+    virtual std::ostream& printTo(std::ostream &out) { return out; }
+    bool setVerbose(bool newvalue) { std::swap(newvalue, verbose); return newvalue; }
+private:
+    virtual unsigned guess() = 0;
+    virtual void result(unsigned location, char bombresult) = 0;
+    virtual void reset() {}
 protected:
     std::random_device rd;
     std::mt19937 gen{rd()};
     std::uniform_int_distribution<> randSq{0, Ocean::dim*Ocean::dim-1};
-    Ocean ocean;
-    Ocean tracking;
-    unsigned turns;
-    bool verbose;
+    bool verbose = false;
 };
 #endif // BOMBER_H

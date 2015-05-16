@@ -1,6 +1,4 @@
 #include <iostream>
-#include <string>
-#include <random>
 #include "Ocean.h"
 #include "Bombers.h"
 #include "Placer.h"

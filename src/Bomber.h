@@ -1,5 +1,6 @@
 #ifndef BOMBER_H
 #define BOMBER_H
+#include <random>
 #include "Ocean.h"
 
 /*
@@ -19,6 +20,9 @@ public:
     unsigned play(Ocean &o) { reset(o); return play(); }
     virtual const char *id() const = 0;
 protected:
+    std::random_device rd;
+    std::mt19937 gen{rd()};
+    std::uniform_int_distribution<> randSq{0, Ocean::dim*Ocean::dim-1};
     Ocean ocean;
     Ocean tracking;
     unsigned turns;

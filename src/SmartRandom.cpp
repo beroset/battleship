@@ -1,10 +1,5 @@
 #include <iostream>
-#include <string>
-#include <random>
 #include "SmartRandom.h"
-
-static std::random_device rd;
-static std::uniform_int_distribution<> r{0, Ocean::dim*Ocean::dim-1};
 
 /*
  * The strategy here is to bomb randomly, but to follow
@@ -12,7 +7,7 @@ static std::uniform_int_distribution<> r{0, Ocean::dim*Ocean::dim-1};
  */
 bool SmartRandom::turn() {
     ++turns;
-    unsigned location = r(rd);
+    unsigned location = randSq(gen);
     // try using our pre-stored guesses first
     if (!next.empty()) {
         for (location = next.back(); 
@@ -23,9 +18,9 @@ bool SmartRandom::turn() {
         }
     }
     if (tracking[location])
-        for (location = r(rd); 
+        for (location = randSq(gen); 
                 tracking[location]; 
-                location = r(rd))
+                location = randSq(gen))
         { }
     char result = ocean.bomb(location);
     if (result != ocean.empty) {
